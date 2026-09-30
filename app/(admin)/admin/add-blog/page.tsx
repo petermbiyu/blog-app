@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
+import Editor from "@/components/shared/richText";
 
 const AddBlog = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const AddBlog = () => {
   });
   const [image, setImage] = useState<File | false>(false);
   const onChangeHandler = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -86,7 +87,7 @@ const AddBlog = () => {
             className="border  outline-none px-4 py-4 w-full border-amber-500 bg-white"
           />
         </div>
-        <div className="mt-5">
+        {/* <div className="mt-5">
           <label htmlFor="description" className="mr-20 text-xl font-semibold">
             Description
           </label>
@@ -98,7 +99,16 @@ const AddBlog = () => {
             value={data.description}
             className="border outline-none px-4 py-4 w-full border-amber-500 bg-white"
           />
+        </div> */}
+
+        <div className="mt-5">
+          <label className="mr-20 text-xl font-semibold">Description</label>
+          <Editor
+            initialContent={data.description}
+            onChange={(html) => setData((prev) => ({ ...prev, description: html }))}
+          />
         </div>
+
         <div className="mt-5">
           <p className="mr-20 text-xl font-semibold">Thumbnail</p>
           <label htmlFor="image" className="cursor-pointer">

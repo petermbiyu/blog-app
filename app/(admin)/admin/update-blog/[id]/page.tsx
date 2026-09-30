@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Editor from "@/components/shared/richText";
 
 type Blog = {
   id: string;
@@ -16,6 +17,7 @@ type Blog = {
 
 const UpdateBlog = () => {
   const router = useRouter();
+  const [loaded, setLoaded] = useState(false);
   const [data, setData] = useState<Blog>({
     id: "",
     title: "",
@@ -30,6 +32,7 @@ const UpdateBlog = () => {
       params: { id },
     });
     setData(response.data.blog);
+    setLoaded(true);
   };
   const onChangeHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -116,19 +119,18 @@ const UpdateBlog = () => {
             className="border  outline-none px-4 py-4 w-full border-amber-500 bg-white"
           />
         </div>
+
         <div className="mt-5">
-          <label htmlFor="description" className="mr-20 text-xl font-semibold">
-            Description
-          </label>
-          <textarea
-            rows={6}
-            name="description"
-            placeholder="Type description here..."
-            onChange={onChangeHandler}
-            value={data.description}
-            className="border outline-none px-4 py-4 w-full border-amber-500 bg-white"
+          <label className="mr-20 text-xl font-semibold">Description</label>
+          <Editor
+            key={loaded ? data.id : "loading"}
+            initialContent={data.description}
+            onChange={(html) =>
+              setData((prev) => ({ ...prev, description: html }))
+            }
           />
         </div>
+
         <div className="mt-5">
           <p className="mr-20 text-xl font-semibold">Thumbnail</p>
           <label htmlFor="image" className="cursor-pointer">
