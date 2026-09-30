@@ -12,7 +12,7 @@ const AddBlog = () => {
   const [data, setData] = useState({
     title: "",
     description: "",
-    category: "education",
+    category: "Education",
     slug: "",
   });
   const [image, setImage] = useState<File | false>(false);
@@ -150,7 +150,7 @@ const AddBlog = () => {
             value={data.category}
             className="border outline-none px-4 py-4 w-full border-amber-500 bg-white"
           >
-            <option value="education">Education</option>
+            <option value="Education">Education</option>
           </select>
         </div>
         <div className="mt-5">

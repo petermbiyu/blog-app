@@ -46,17 +46,25 @@ const Blog = () => {
   }
   return (
     <div>
-      <div className="bg-gray-500 text-white text-center pt-5 pb-50">
-        <h1 className="text-4xl font-bold">{blog.title}</h1>
+      <div className="w-full bg-gray-500 text-white text-center pt-5 pb-50">
+        <h1 className="text-4xl font-bold max-w-200 mx-auto text-center">
+          {blog.title}
+        </h1>
       </div>
       <div className="w-full max-w-200 mx-auto -mt-40 border-4 border-white">
         <Image src={`/${blog.image}`} alt="" width={1280} height={660} />
-        <h3 className="text-[0.9rem] font-semibold italic text-amber-400">
-          {blog.category}
-        </h3>
-        <p dangerouslySetInnerHTML={{ __html: blog.description }}>
-          {/* {blog.description} */}
-        </p>
+        <div className="blog-post">
+          <h3
+            style={{ fontSize: "16px" }}
+            className="font-semibold italic text-amber-500"
+          >
+            {blog.category}
+          </h3>
+
+          <p dangerouslySetInnerHTML={{ __html: blog.description }}>
+            {/* {blog.description} */}
+          </p>
+        </div>
       </div>
     </div>
   );
