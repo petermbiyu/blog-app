@@ -6,8 +6,12 @@ import { unlink } from "fs/promises";
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id");
+  const slug = req.nextUrl.searchParams.get("slug");
   if (id) {
     const blog = await prisma.blog.findUnique({ where: { id: parseInt(id) } });
+    return NextResponse.json({ success: true, blog });
+  } else if (slug) {
+    const blog = await prisma.blog.findUnique({ where: { slug: slug } });
     return NextResponse.json({ success: true, blog });
   } else {
     const blog = await prisma.blog.findMany();

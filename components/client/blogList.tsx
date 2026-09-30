@@ -6,18 +6,28 @@ import { blog_data } from "@/assets/assets";
 import BlogItems from "./blogItems";
 import { useEffect, useState } from "react";
 import { StaticImageData } from "next/image";
+import axios from "axios";
 type Blog = {
   id: number;
   title: string;
   category: string;
   description: string;
-  image: StaticImageData;
+  slug: string;
+  image: string;
 };
 
 const BlogList = () => {
-  const [data, setData] = useState<Blog[] | null>(null);
-  const fetchAllData = () => {
-    setData(blog_data);
+  const [data, setData] = useState<Blog[] | false>(false);
+  const fetchAllData = async () => {
+    const response = await axios.get("/api/blog");
+    try {
+      if (response.data.success) {
+        setData(response.data.blog);
+      }
+    } catch (error) {
+      const message = response?.data?.message || "Error retriving data";
+      console.log(message);
+    }
   };
   useEffect(() => {
     fetchAllData();
@@ -35,6 +45,7 @@ const BlogList = () => {
                 title={blog.title}
                 description={blog.description}
                 category={blog.category}
+                slug={blog.slug}
                 image={blog.image}
               />
             );

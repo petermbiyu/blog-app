@@ -35,6 +35,10 @@ const AddBlog = () => {
       toast.error("Please upload image...");
       return;
     }
+    if (!data.title || !data.description || !data.category || !data.slug) {
+      toast.error("Please fill all the text fields");
+      return;
+    }
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
@@ -43,9 +47,20 @@ const AddBlog = () => {
     formData.append("image", image);
 
     try {
-      const response = await axios.post("/api/blog", formData);
+      const response = await axios.post("/api/blog", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       if (response.data.success) {
         toast.success(response.data.message);
+
+        setData({
+          title: "",
+          category: "education",
+          description: "",
+          slug: "",
+        });
+        setImage(false);
+
         router.push("/admin/all-blogs");
       }
     } catch (error: any) {
@@ -55,14 +70,6 @@ const AddBlog = () => {
       } else {
         toast.error("Unexpected error");
       }
-    } finally {
-      setData({
-        title: "",
-        category: "education",
-        description: "",
-        slug: "",
-      });
-      setImage(false);
     }
   };
 
@@ -105,7 +112,9 @@ const AddBlog = () => {
           <label className="mr-20 text-xl font-semibold">Description</label>
           <Editor
             initialContent={data.description}
-            onChange={(html) => setData((prev) => ({ ...prev, description: html }))}
+            onChange={(html) =>
+              setData((prev) => ({ ...prev, description: html }))
+            }
           />
         </div>
 
